@@ -1,0 +1,3 @@
+- FUZZ Generated URLs using ffuf
+- Parse ffuf output for each fuzz and save to JSON
+- Contacatenate all JSON files into one file
