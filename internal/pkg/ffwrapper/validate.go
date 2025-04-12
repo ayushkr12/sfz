@@ -4,14 +4,12 @@ import (
 	"fmt"
 )
 
-func (fw *FFUFWrapper) Validate() error {
-	if fw.TargetURL == "" {
-		return fmt.Errorf("TargetURL is required")
-	}
-
+func (fw *FFUFWrapper) ValidateConfig() error {
 	if fw.WordlistPath == "" {
-		return fmt.Errorf("WordlistPath is required")
+		return fmt.Errorf("wordlist path is required")
 	}
-
+	if fw.OutputFolder == "" {
+		return fmt.Errorf("output folder is required")
+	}
 	return nil
 }
