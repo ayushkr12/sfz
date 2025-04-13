@@ -17,9 +17,32 @@ type FFUFWrapper struct {
 	Headers                     string
 	DisableAutomaticCalibration bool
 	DisableColorizeOutput       bool
-	DisableSilent               bool
+	Silent                      bool
 	AdditionalFFUFArgs          []string
 	DebugLog                    bool
+}
+
+func NewFFUFWrapper(
+	targetURLs []string,
+	wordlistPath,
+	outputFolder,
+	headers string,
+	disableAutomaticCalibration,
+	disableColorizeOutput, silent bool,
+	additionalFFUFArgs []string,
+	debugLog bool,
+) *FFUFWrapper {
+	return &FFUFWrapper{
+		TargetURLs:                  targetURLs,
+		WordlistPath:                wordlistPath,
+		OutputFolder:                outputFolder,
+		Headers:                     headers,
+		DisableAutomaticCalibration: disableAutomaticCalibration,
+		DisableColorizeOutput:       disableColorizeOutput,
+		Silent:                      silent,
+		AdditionalFFUFArgs:          additionalFFUFArgs,
+		DebugLog:                    debugLog,
+	}
 }
 
 func (fw *FFUFWrapper) LaunchCMDs() {
@@ -35,7 +58,6 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 	for _, url := range fw.TargetURLs {
 		log.Info(fmt.Sprintf("Launching FFUF for URL %s", url))
 
-		// validate individual URL if needed
 		if url == "" {
 			log.Warn("Skipping empty URL")
 			continue
@@ -53,13 +75,18 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 
 	if fw.JSONOutputFilePath != "" {
 		log.Info(fmt.Sprintf("Merging JSON output files into %s", fw.JSONOutputFilePath))
-		if err := MergeJsonFiles(ffufOutputFilePaths, fw.JSONOutputFilePath); err != nil {
+		if err := MergeFFUFJSONOutputs(ffufOutputFilePaths, fw.JSONOutputFilePath); err != nil {
 			log.Error(fmt.Sprintf("Failed to merge JSON files: %v", err))
 		}
 	}
 }
 
-func (fw *FFUFWrapper) LaunchCMD(targetURL, outputFolderPath string) (string, error) {
+func (fw *FFUFWrapper) LaunchCMD(
+	targetURL string,
+	outputFolderPath string) (
+	JSONOuputFilePath string,
+	err error,
+) {
 	var args []string
 
 	// Add additional args first to allow overriding
@@ -76,7 +103,7 @@ func (fw *FFUFWrapper) LaunchCMD(targetURL, outputFolderPath string) (string, er
 	if !fw.DisableAutomaticCalibration {
 		args = append(args, "-ac")
 	}
-	if !fw.DisableSilent {
+	if fw.Silent {
 		args = append(args, "-s")
 	}
 

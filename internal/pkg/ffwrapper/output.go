@@ -8,7 +8,11 @@ import (
 	"os"
 )
 
-func MergeJsonFiles(filePaths []string, outputFilePath string) error {
+func MergeFFUFJSONOutputs(inputFilePaths []string, outputFilePath string) error {
+	return mergeJsonFiles(inputFilePaths, outputFilePath)
+}
+
+func mergeJsonFiles(filePaths []string, outputFilePath string) error {
 	merged := make(map[string]any)
 
 	for _, path := range filePaths {
@@ -23,7 +27,7 @@ func MergeJsonFiles(filePaths []string, outputFilePath string) error {
 			return fmt.Errorf("failed to read file %s: %w", path, err)
 		}
 
-		var temp map[string]interface{}
+		var temp map[string]any
 		if err := json.Unmarshal(data, &temp); err != nil {
 			return fmt.Errorf("failed to parse JSON in file %s: %w", path, err)
 		}
