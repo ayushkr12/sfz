@@ -10,32 +10,35 @@ import (
 )
 
 type FFUFWrapper struct {
-	TargetURLs                  []string
-	JSONOutputFilePath          string // path to the JSON output file
-	OutputFolder                string
-	WordlistPath                string
-	Headers                     string
-	DisableAutomaticCalibration bool
-	DisableColorizeOutput       bool
-	Silent                      bool
-	AdditionalFFUFArgs          []string
-	DebugLog                    bool
+	TargetURLs                  []string // list of target URLs to scan
+	FinalJSONOutputFilePath     string   // path to the merged JSON output file to create after all FFUF runs
+	FFUFResultsOutputFolder     string   // path to the folder where FFUF results will be stored
+	WordlistPath                string   // path to the wordlist file
+	Headers                     string   // HTTP headers to be used in the requests
+	DisableAutomaticCalibration bool     // flag to disable automatic calibration "-ac"
+	DisableColorizeOutput       bool     // flag to disable colorized output "-c"
+	Silent                      bool     // flag to run FFUF in silent mode "-s"
+	AdditionalFFUFArgs          []string // additional arguments to pass to FFUF
+	DebugLog                    bool     // log with timestamps for debugging
 }
 
 func NewFFUFWrapper(
 	targetURLs []string,
-	wordlistPath,
-	outputFolder,
+	finalJSONOuputFilePath string,
+	ffufResultsOutputFolder string,
+	wordlistPath string,
 	headers string,
-	disableAutomaticCalibration,
-	disableColorizeOutput, silent bool,
+	disableAutomaticCalibration bool,
+	disableColorizeOutput bool,
+	silent bool,
 	additionalFFUFArgs []string,
 	debugLog bool,
 ) *FFUFWrapper {
 	return &FFUFWrapper{
 		TargetURLs:                  targetURLs,
+		FinalJSONOutputFilePath:     finalJSONOuputFilePath,
+		FFUFResultsOutputFolder:     ffufResultsOutputFolder,
 		WordlistPath:                wordlistPath,
-		OutputFolder:                outputFolder,
 		Headers:                     headers,
 		DisableAutomaticCalibration: disableAutomaticCalibration,
 		DisableColorizeOutput:       disableColorizeOutput,
@@ -63,7 +66,7 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 			continue
 		}
 
-		outputPath, err := fw.LaunchCMD(url, fw.OutputFolder)
+		outputPath, err := fw.LaunchCMD(url, fw.FFUFResultsOutputFolder)
 		if err != nil {
 			log.Warn(fmt.Sprintf("Failed to launch FFUF for URL %s: %v", url, err))
 			continue
@@ -73,9 +76,9 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 		ffufOutputFilePaths = append(ffufOutputFilePaths, outputPath)
 	}
 
-	if fw.JSONOutputFilePath != "" {
-		log.Info(fmt.Sprintf("Merging JSON output files into %s", fw.JSONOutputFilePath))
-		if err := MergeFFUFJSONOutputs(ffufOutputFilePaths, fw.JSONOutputFilePath); err != nil {
+	if fw.FinalJSONOutputFilePath != "" {
+		log.Info(fmt.Sprintf("Merging JSON output files into %s", fw.FinalJSONOutputFilePath))
+		if err := MergeFFUFJSONOutputs(ffufOutputFilePaths, fw.FinalJSONOutputFilePath); err != nil {
 			log.Error(fmt.Sprintf("Failed to merge JSON files: %v", err))
 		}
 	}
@@ -107,8 +110,10 @@ func (fw *FFUFWrapper) LaunchCMD(
 		args = append(args, "-s")
 	}
 
-	outputFile := filepath.Join(outputFolderPath, GenerateRandomString(20)+".json")
-	args = append(args, "-o", outputFile)
+	if fw.FFUFResultsOutputFolder != "" { // set output file only if output folder is set
+		JSONOuputFilePath = filepath.Join(outputFolderPath, GenerateRandomString(20)+".json")
+		args = append(args, "-o", JSONOuputFilePath)
+	}
 
 	cmd := exec.Command("ffuf", args...)
 	cmd.Stdout = os.Stdout
@@ -118,5 +123,5 @@ func (fw *FFUFWrapper) LaunchCMD(
 		return "", fmt.Errorf("error running ffuf: %w", err)
 	}
 
-	return outputFile, nil
+	return JSONOuputFilePath, nil
 }

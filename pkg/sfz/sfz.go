@@ -7,19 +7,18 @@ import (
 
 func RunFUFF(
 	fuzzableUrls []string,
+	finalJSONOutputFilePath string,
+	ffufResultsOutputFolder string,
 	wordlistPath string,
-	outputFilePath string,
 	headers string,
-	disableColorizeOutput bool,
 	disableAutomaticCalibration bool,
+	disableColorizeOutput bool,
 	silent bool,
 	additionalFFUFArgs []string,
 	debugLog bool,
 ) {
 	ffufWrapper := ffwrapper.NewFFUFWrapper(
-		fuzzableUrls, wordlistPath, outputFilePath, headers,
-		disableAutomaticCalibration, disableColorizeOutput, silent, additionalFFUFArgs, debugLog,
-	)
+		fuzzableUrls, finalJSONOutputFilePath, ffufResultsOutputFolder, wordlistPath, headers, disableAutomaticCalibration, disableColorizeOutput, silent, additionalFFUFArgs, debugLog)
 	ffufWrapper.LaunchCMDs()
 }
 
