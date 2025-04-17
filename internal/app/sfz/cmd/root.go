@@ -8,7 +8,7 @@ import (
 
 	"strings"
 
-	"github.com/ayushkr12/sfz/pkg/sfz"
+	"github.com/ayushkr12/sfz/pkg/urlparser"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
@@ -45,7 +45,7 @@ func runMain(_ *cobra.Command, _ []string) {
 		log.Info("No input provided. Use --list or pipe URLs into stdin.")
 	}
 
-	fuzzableURLs, errs := sfz.GenerateFuzzableURLs(rawURLs, fuzzIdentifier)
+	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(rawURLs, fuzzIdentifier)
 
 	for _, u := range fuzzableURLs {
 		fmt.Println(u)

@@ -1,4 +1,4 @@
-package sfz
+package urlparser
 
 import (
 	"github.com/ayushkr12/sfz/internal/pkg/urlparser"

@@ -1,4 +1,4 @@
-package sfz
+package urlparser
 
 import (
 	"testing"
