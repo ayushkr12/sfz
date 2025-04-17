@@ -68,7 +68,7 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 
 		outputPath, err := fw.LaunchCMD(url, fw.FFUFResultsOutputFolder)
 		if err != nil {
-			log.Warn(fmt.Sprintf("Failed to launch FFUF for URL %s: %v", url, err))
+			log.Warn(fmt.Sprintf("Failed to launch FFUF for URL %s: %v", url, err)) // todo: return those errors slice as well as printing them
 			continue
 		}
 
@@ -91,6 +91,12 @@ func (fw *FFUFWrapper) LaunchCMD(
 	err error,
 ) {
 	var args []string
+
+	err = CreateFolderIfNotExists(outputFolderPath)
+
+	if err != nil {
+		return "", fmt.Errorf("failed to create output folder: %v", err)
+	}
 
 	// Add additional args first to allow overriding
 	args = append(args, fw.AdditionalFFUFArgs...)

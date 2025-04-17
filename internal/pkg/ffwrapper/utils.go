@@ -27,3 +27,15 @@ func GetDirContents(dirPath string) ([]os.DirEntry, error) {
 	}
 	return entries, nil
 }
+
+func CreateFolderIfNotExists(folderPath string) error {
+	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
+		err := os.MkdirAll(folderPath, 0755) // 0755 is the permission mode for the directory (rwxr-xr-x)
+		if err != nil {
+			return fmt.Errorf("failed to create folder: %v", err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("failed to check if folder exists: %v", err)
+	}
+	return nil
+}
