@@ -9,8 +9,8 @@ func (fw *FFUFWrapper) ValidateConfig() error {
 		return fmt.Errorf("wordlist path is required")
 	}
 
-	if fw.FFUFResultsOutputFolder == "" {
-		return fmt.Errorf("FFUF results output folder is required")
+	if fw.FFUFResultsOutputFolder == "" && fw.FinalJSONOutputFilePath != "" {
+		return fmt.Errorf("FFUF results output folder is required when final JSON output file path is set")
 	}
 
 	return nil
