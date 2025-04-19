@@ -1,14 +1,17 @@
 package sfz
 
 type config struct {
-	rawURLs        []string
-	fuzzIdentifier string
-	wordlist       string
-	outputJSON     string
-	outputFolder   string
-	silent         bool
-	colorize       bool
-	headers        string
+	rawURLs                []string
+	fuzzIdentifier         string
+	wordlist               string
+	outputJSON             string
+	outputFolder           string
+	silent                 bool
+	colorize               bool
+	headers                string
+	disableAutoCalibration bool
+	additionalFFUFArgs     []string
+	debugLog               bool
 }
 
 type Option func(*config)
@@ -25,12 +28,6 @@ func WithFuzzIdentifier(fuzz string) Option {
 	}
 }
 
-func WithWordlist(path string) Option {
-	return func(c *config) {
-		c.wordlist = path
-	}
-}
-
 func WithFinalJSONOutput(path string) Option {
 	return func(c *config) {
 		c.outputJSON = path
@@ -43,20 +40,44 @@ func WithFFUFResultsOutputFolder(path string) Option {
 	}
 }
 
-func WithSilentMode(silent bool) Option {
+func WithWordlist(path string) Option {
 	return func(c *config) {
-		c.silent = silent
-	}
-}
-
-func WithDisableColorizeOutput(disable bool) Option {
-	return func(c *config) {
-		c.colorize = disable
+		c.wordlist = path
 	}
 }
 
 func WithHeaders(headers string) Option {
 	return func(c *config) {
 		c.headers = headers
+	}
+}
+
+func WithDisableAutomaticCalibration(disable bool) Option {
+	return func(c *config) {
+		c.disableAutoCalibration = disable
+	}
+}
+
+func WithDisableColorizeOutput(disable bool) Option {
+	return func(c *config) {
+		c.colorize = !disable
+	}
+}
+
+func WithSilentMode(silent bool) Option {
+	return func(c *config) {
+		c.silent = silent
+	}
+}
+
+func WithAdditionalFFUFArgs(args []string) Option {
+	return func(c *config) {
+		c.additionalFFUFArgs = args
+	}
+}
+
+func WithDebugLog(enable bool) Option {
+	return func(c *config) {
+		c.debugLog = enable
 	}
 }

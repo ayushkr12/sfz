@@ -33,6 +33,9 @@ func (w *Wrapper) Run() error {
 		ffwrapper.WithFFUFResultsOutputFolder(w.cfg.outputFolder),
 		ffwrapper.WithDisableColorizeOutput(w.cfg.colorize),
 		ffwrapper.WithHeaders(w.cfg.headers),
+		ffwrapper.WithDisableAutomaticCalibration(w.cfg.disableAutoCalibration),
+		ffwrapper.WithAdditionalFFUFArgs(w.cfg.additionalFFUFArgs),
+		ffwrapper.WithDebugLog(w.cfg.debugLog),
 	}
 
 	fw, err := ffwrapper.New(ffOpts...)
