@@ -26,7 +26,7 @@ func (w *Wrapper) Run() error {
 	}
 
 	ffOpts := []ffwrapper.Option{
-		ffwrapper.WithTargetURLs(fuzzableURLs),
+		ffwrapper.WithFuzzableURLs(fuzzableURLs),
 		ffwrapper.WithWordlist(w.cfg.wordlist),
 		ffwrapper.WithFinalJSONOutput(w.cfg.outputJSON),
 		ffwrapper.WithSilentMode(w.cfg.silent),

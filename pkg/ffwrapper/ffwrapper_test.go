@@ -8,7 +8,7 @@ import (
 
 func TestRunFFUF(t *testing.T) {
 	wrapper, err := ffwrapper.New(
-		ffwrapper.WithTargetURLs([]string{
+		ffwrapper.WithFuzzableURLs([]string{
 			"https://example.com/FUZZ",
 		}),
 		ffwrapper.WithWordlist("common.txt"),

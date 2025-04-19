@@ -4,7 +4,7 @@ import "github.com/ayushkr12/sfz/internal/pkg/ffwrapper"
 
 type Option func(*ffwrapper.FFUFWrapper)
 
-func WithTargetURLs(urls []string) Option {
+func WithFuzzableURLs(urls []string) Option {
 	return func(f *ffwrapper.FFUFWrapper) {
 		f.TargetURLs = urls
 	}
