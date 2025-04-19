@@ -10,7 +10,7 @@ import (
 )
 
 type FFUFWrapper struct {
-	TargetURLs                  []string // list of target URLs to scan
+	FuzzableURLs                []string // list of target URLs to scan
 	FinalJSONOutputFilePath     string   // path to the merged JSON output file to create after all FFUF runs
 	FFUFResultsOutputFolder     string   // path to the folder where FFUF results will be stored
 	WordlistPath                string   // path to the wordlist file
@@ -20,32 +20,6 @@ type FFUFWrapper struct {
 	Silent                      bool     // flag to run FFUF in silent mode "-s"
 	AdditionalFFUFArgs          []string // additional arguments to pass to FFUF
 	DebugLog                    bool     // log with timestamps for debugging
-}
-
-func NewFFUFWrapper(
-	targetURLs []string,
-	finalJSONOuputFilePath string,
-	ffufResultsOutputFolder string,
-	wordlistPath string,
-	headers string,
-	disableAutomaticCalibration bool,
-	disableColorizeOutput bool,
-	silent bool,
-	additionalFFUFArgs []string,
-	debugLog bool,
-) *FFUFWrapper {
-	return &FFUFWrapper{
-		TargetURLs:                  targetURLs,
-		FinalJSONOutputFilePath:     finalJSONOuputFilePath,
-		FFUFResultsOutputFolder:     ffufResultsOutputFolder,
-		WordlistPath:                wordlistPath,
-		Headers:                     headers,
-		DisableAutomaticCalibration: disableAutomaticCalibration,
-		DisableColorizeOutput:       disableColorizeOutput,
-		Silent:                      silent,
-		AdditionalFFUFArgs:          additionalFFUFArgs,
-		DebugLog:                    debugLog,
-	}
 }
 
 func (fw *FFUFWrapper) LaunchCMDs() {
@@ -58,7 +32,7 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 	}
 
 	var ffufOutputFilePaths []string
-	for _, url := range fw.TargetURLs {
+	for _, url := range fw.FuzzableURLs {
 		log.Info(fmt.Sprintf("Launching FFUF for URL %s", url))
 
 		if url == "" {

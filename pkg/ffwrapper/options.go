@@ -6,7 +6,7 @@ type Option func(*ffwrapper.FFUFWrapper)
 
 func WithFuzzableURLs(urls []string) Option {
 	return func(f *ffwrapper.FFUFWrapper) {
-		f.TargetURLs = urls
+		f.FuzzableURLs = urls
 	}
 }
 
