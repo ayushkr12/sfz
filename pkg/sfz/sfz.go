@@ -2,6 +2,7 @@ package sfz
 
 import (
 	"github.com/ayushkr12/sfz/pkg/ffwrapper"
+	"github.com/ayushkr12/sfz/pkg/logger"
 	"github.com/ayushkr12/sfz/pkg/urlparser"
 )
 
@@ -20,9 +21,17 @@ func New(opts ...Option) *Wrapper {
 
 // Run generates fuzzable URLs and launches ffuf with mapped options
 func (w *Wrapper) Run() error {
+	if !w.cfg.debugLog {
+		logger.EnableTimestamp = false
+	}
+
 	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(w.cfg.rawURLs, w.cfg.fuzzIdentifier)
-	if errs != nil {
-		return errs[0] // todo: don't stop
+	if len(errs) > 0 {
+		for _, err := range errs {
+			if !w.cfg.disableWarnings {
+				logger.Warn(err.Error())
+			}
+		}
 	}
 
 	ffOpts := []ffwrapper.Option{

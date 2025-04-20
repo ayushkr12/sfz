@@ -11,6 +11,7 @@ type config struct {
 	headers                string
 	disableAutoCalibration bool
 	additionalFFUFArgs     []string
+	disableWarnings        bool
 	debugLog               bool
 }
 
@@ -73,6 +74,12 @@ func WithSilentMode(silent bool) Option {
 func WithAdditionalFFUFArgs(args []string) Option {
 	return func(c *config) {
 		c.additionalFFUFArgs = args
+	}
+}
+
+func WithDisableWarnings(disable bool) Option {
+	return func(c *config) {
+		c.disableWarnings = disable
 	}
 }
 

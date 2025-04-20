@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/ayushkr12/sfz/pkg/logger"
 )
 
 type FFUFWrapper struct {
@@ -23,7 +23,9 @@ type FFUFWrapper struct {
 }
 
 func (fw *FFUFWrapper) LaunchCMDs() {
-	log.SetFormatter(&log.TextFormatter{DisableTimestamp: !fw.DebugLog})
+	if !fw.DebugLog {
+		log.EnableTimestamp = false
+	}
 
 	// Validate shared config once
 	if err := fw.ValidateConfig(); err != nil {
