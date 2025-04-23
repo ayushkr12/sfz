@@ -1,6 +1,8 @@
 package sfz
 
 import (
+	"fmt"
+
 	"github.com/ayushkr12/sfz/pkg/ffwrapper"
 	"github.com/ayushkr12/sfz/pkg/logger"
 	"github.com/ayushkr12/sfz/pkg/urlparser"
@@ -25,6 +27,14 @@ func (w *Wrapper) Run() error {
 		logger.EnableTimestamp = false
 	}
 
+	if w.cfg.wordlist == "" {
+		logger.Error("Wordlist is required")
+	}
+
+	if w.cfg.disableWarnings {
+		logger.DisableWarn = true
+	}
+
 	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(w.cfg.rawURLs, w.cfg.fuzzIdentifier)
 	if len(errs) > 0 {
 		for _, err := range errs {
@@ -34,13 +44,20 @@ func (w *Wrapper) Run() error {
 		}
 	}
 
+	if len(fuzzableURLs) == 0 {
+		logger.Info("No fuzzable URLs generated. Exiting.")
+		return nil
+	}
+
+	logger.Info(fmt.Sprintf("Generated %d fuzzable URLs", len(fuzzableURLs)))
+
 	ffOpts := []ffwrapper.Option{
 		ffwrapper.WithFuzzableURLs(fuzzableURLs),
 		ffwrapper.WithWordlist(w.cfg.wordlist),
 		ffwrapper.WithFinalJSONOutput(w.cfg.outputJSON),
 		ffwrapper.WithSilentMode(w.cfg.silent),
 		ffwrapper.WithFFUFResultsOutputFolder(w.cfg.outputFolder),
-		ffwrapper.WithDisableColorizeOutput(w.cfg.colorize),
+		ffwrapper.WithDisableColorizeOutput(!w.cfg.colorize),
 		ffwrapper.WithHeaders(w.cfg.headers),
 		ffwrapper.WithDisableAutomaticCalibration(w.cfg.disableAutoCalibration),
 		ffwrapper.WithAdditionalFFUFArgs(w.cfg.additionalFFUFArgs),
