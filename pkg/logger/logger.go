@@ -2,13 +2,13 @@ package logger
 
 import (
 	"os"
-	"strings"
 
 	"github.com/sirupsen/logrus"
 )
 
 var log *logrus.Logger
 var EnableTimestamp = true // Default is true
+var DisableWarn = false    // If true, disables Warn logs
 
 // CustomFormatter formats logs with short levels and optional timestamps
 type CustomFormatter struct {
@@ -16,33 +16,14 @@ type CustomFormatter struct {
 }
 
 func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	// Map level to short format
-	level := strings.ToUpper(entry.Level.String())
-	switch entry.Level {
-	case logrus.InfoLevel:
-		level = "INF"
-	case logrus.WarnLevel:
-		level = "WRN"
-	case logrus.ErrorLevel:
-		level = "ERR"
-	case logrus.DebugLevel:
-		level = "DBG"
-	case logrus.TraceLevel:
-		level = "TRC"
-	case logrus.FatalLevel:
-		level = "FTL"
-	case logrus.PanicLevel:
-		level = "PNC"
-	}
-
 	// Optional timestamp
 	timestamp := ""
 	if EnableTimestamp {
-		timestamp = entry.Time.Format("2006-01-02 15:04:05") + " "
+		timestamp = entry.Time.Format("2006-01-02 15:04:05")
 	}
 
 	// Update message
-	entry.Message = "[" + level + "] " + timestamp + entry.Message
+	entry.Message = "[" + timestamp + "] " + entry.Message
 
 	return f.TextFormatter.Format(entry)
 }
@@ -68,6 +49,9 @@ func Info(msg string) {
 }
 
 func Warn(msg string) {
+	if DisableWarn {
+		return
+	}
 	log.Warn(msg)
 }
 
