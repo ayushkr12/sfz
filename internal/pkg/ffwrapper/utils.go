@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -38,4 +39,8 @@ func CreateFolderIfNotExists(folderPath string) error {
 		return fmt.Errorf("failed to check if folder exists: %v", err)
 	}
 	return nil
+}
+
+func getRawCommandOutput(cmdArgs []string) string {
+	return fmt.Sprintf("ffuf %s", strings.Join(cmdArgs, " "))
 }

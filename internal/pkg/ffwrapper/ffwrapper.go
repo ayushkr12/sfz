@@ -35,7 +35,8 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 
 	var ffufOutputFilePaths []string
 	for _, url := range fw.FuzzableURLs {
-		log.Info(fmt.Sprintf("Launching FFUF for URL %s", url))
+		log.Debug(fmt.Sprintf("\nLaunching FFUF for URL %s", url))
+		log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
 
 		if url == "" {
 			log.Warn("Skipping empty URL")
@@ -48,7 +49,7 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 			continue
 		}
 
-		log.Info(fmt.Sprintf("FFUF output for URL %s saved to %s", url, outputPath))
+		log.Debug(fmt.Sprintf("\nFFUF output for URL %s saved to %s\n", url, outputPath))
 		ffufOutputFilePaths = append(ffufOutputFilePaths, outputPath)
 	}
 
