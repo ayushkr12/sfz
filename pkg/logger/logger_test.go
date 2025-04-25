@@ -6,7 +6,8 @@ import (
 
 func TestLogger(t *testing.T) {
 	DisableWarn = true
-	EnableTimestamp = false
+	DisableDebug = true
 	Warn("Test warning message")
+	Debug("Test debug message")
 	Info("Test debug message")
 }

@@ -25,6 +25,7 @@ func New(opts ...Option) *Wrapper {
 func (w *Wrapper) Run() error {
 	if !w.cfg.debugLog {
 		logger.EnableTimestamp = false
+		logger.DisableDebug = true
 	}
 
 	if w.cfg.wordlist == "" {
