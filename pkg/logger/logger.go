@@ -19,11 +19,8 @@ func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	// Optional timestamp
 	timestamp := ""
 	if EnableTimestamp {
-		timestamp = entry.Time.Format("2006-01-02 15:04:05")
+		entry.Message = "[" + timestamp + "] " + entry.Message
 	}
-
-	// Update message
-	entry.Message = "[" + timestamp + "] " + entry.Message
 
 	return f.TextFormatter.Format(entry)
 }
