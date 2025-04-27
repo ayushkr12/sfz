@@ -1,5 +1,5 @@
 {
-  "commandline": "ffuf -fc 403 -u http://localhost:5000/FUZZ -w testdata/wordlist.txt -c -H User-Agent: Mozilla/5.0 -ac -s -o testdata\\output\\FY7USmnYKLZAS4qR4HCW.json",
+  "commandline": "ffuf -fc 403 -u http://localhost:5000/api/v1/FUZZ -w testdata/wordlist.txt -c -H User-Agent: Mozilla/5.0 -ac -s -o testdata\\output\\YMqzgWFqPnkl4gOS19SC.json",
   "config": {
     "OutputSkipEmptyFile": false,
     "autocalibration": true,
@@ -12,7 +12,7 @@
     "client-cert": "",
     "client-key": "",
     "cmd_inputnum": 100,
-    "cmdline": "ffuf -fc 403 -u http://localhost:5000/FUZZ -w testdata/wordlist.txt -c -H User-Agent: Mozilla/5.0 -ac -s -o testdata\\output\\FY7USmnYKLZAS4qR4HCW.json",
+    "cmdline": "ffuf -fc 403 -u http://localhost:5000/api/v1/FUZZ -w testdata/wordlist.txt -c -H User-Agent: Mozilla/5.0 -ac -s -o testdata\\output\\YMqzgWFqPnkl4gOS19SC.json",
     "colors": true,
     "configfile": "",
     "debuglog": "",
@@ -48,7 +48,7 @@
           "value": "403"
         }
       },
-      "IsCalibrated": true,
+      "IsCalibrated": false,
       "Matchers": {
         "status": {
           "value": "200-299,301,302,307,401,403,405,500"
@@ -63,7 +63,7 @@
     "mmode": "or",
     "noninteractive": false,
     "outputdirectory": "",
-    "outputfile": "testdata\\output\\FY7USmnYKLZAS4qR4HCW.json",
+    "outputfile": "testdata\\output\\YMqzgWFqPnkl4gOS19SC.json",
     "outputformat": "json",
     "postdata": "",
     "proxyurl": "",
@@ -84,12 +84,12 @@
     "stop_errors": false,
     "threads": 40,
     "timeout": 10,
-    "url": "http://localhost:5000/FUZZ",
+    "url": "http://localhost:5000/api/v1/FUZZ",
     "verbose": false,
     "wordlists": [
       "C:\\Users\\ayush\\OneDrive\\Desktop\\tools\\sfz\\tests\\testdata\\wordlist.txt"
     ]
   },
   "results": [],
-  "time": "2025-04-25T20:14:35+05:30"
+  "time": "2025-04-28T02:58:57+05:30"
 }

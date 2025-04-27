@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"os"
 	"testing"
 
 	"github.com/ayushkr12/sfz/pkg/sfz"
@@ -42,4 +43,5 @@ func TestRun(t *testing.T) {
 	if err != nil {
 		t.Errorf("Run() failed with error: %v", err)
 	}
+	_ = os.RemoveAll(outputFolder)
 }
