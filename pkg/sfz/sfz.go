@@ -50,7 +50,7 @@ func (w *Wrapper) Run() error {
 		return nil
 	}
 
-	logger.Info(fmt.Sprintf("Generated %d fuzzable URLs", len(fuzzableURLs)))
+	logger.Info(fmt.Sprintf("Generated %d fuzzable URLs\n", len(fuzzableURLs)))
 
 	ffOpts := []ffwrapper.Option{
 		ffwrapper.WithFuzzableURLs(fuzzableURLs),

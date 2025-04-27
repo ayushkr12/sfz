@@ -35,9 +35,6 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 
 	var ffufOutputFilePaths []string
 	for _, url := range fw.FuzzableURLs {
-		log.Debug(fmt.Sprintf("\nLaunching FFUF for URL %s", url))
-		log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
-
 		if url == "" {
 			log.Warn("Skipping empty URL")
 			continue
@@ -48,8 +45,6 @@ func (fw *FFUFWrapper) LaunchCMDs() {
 			log.Warn(fmt.Sprintf("Failed to launch FFUF for URL %s: %v", url, err)) // todo: return those errors slice as well as printing them
 			continue
 		}
-
-		log.Debug(fmt.Sprintf("\nFFUF output for URL %s saved to %s\n", url, outputPath))
 		ffufOutputFilePaths = append(ffufOutputFilePaths, outputPath)
 	}
 
@@ -98,6 +93,9 @@ func (fw *FFUFWrapper) LaunchCMD(
 		args = append(args, "-o", JSONOuputFilePath)
 	}
 
+	log.Info(fmt.Sprintf("Launching FFUF for URL %s", targetURL))
+	log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
+
 	cmd := exec.Command("ffuf", args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -105,6 +103,10 @@ func (fw *FFUFWrapper) LaunchCMD(
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("error running ffuf: %w", err)
 	}
+
+	log.Info(
+		fmt.Sprintf("Saved to %s\n", JSONOuputFilePath),
+	)
 
 	return JSONOuputFilePath, nil
 }

@@ -22,6 +22,8 @@ func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		entry.Message = "[" + time.Now().Format("2006-01-02 15:04:05") + "] " + entry.Message
 	}
 
+	entry.Message += "\n"
+
 	return f.TextFormatter.Format(entry)
 }
 
