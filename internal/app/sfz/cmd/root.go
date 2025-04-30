@@ -5,17 +5,28 @@ import (
 	"fmt"
 	"io"
 	"os"
-
 	"strings"
 
+	"github.com/ayushkr12/sfz/pkg/sfz"
 	"github.com/ayushkr12/sfz/pkg/urlparser"
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v2"
 	"golang.org/x/term"
 )
 
-func runMain(_ *cobra.Command, _ []string) {
-	var rawURLs []string
+func App() *cli.App {
+	return &cli.App{
+		Name:  "sfz",
+		Usage: "Smart Fuzz using ffuf",
+		Flags: Flags(),
+		Action: func(c *cli.Context) error {
+			return runMain()
+		},
+	}
+}
+
+func runMain() error {
+	var urls []string
 
 	if !term.IsTerminal(int(os.Stdin.Fd())) {
 		log.Info("Reading URLs from stdin...")
@@ -31,22 +42,22 @@ func runMain(_ *cobra.Command, _ []string) {
 			}
 			line = strings.TrimSpace(line)
 			if line != "" {
-				rawURLs = append(rawURLs, line)
+				urls = append(urls, line)
 			}
 		}
 	} else if urlFile != "" {
 		log.Infof("Reading URLs from file: %s", urlFile)
 		var err error
-		rawURLs, err = readURLsFromFile(urlFile)
+		urls, err = readURLsFromFile(urlFile)
 		if err != nil {
 			log.Fatalf("Failed to read URLs from file: %v", err)
 		}
 	} else {
 		log.Info("No input provided. Use --list or pipe URLs into stdin.")
+		return nil
 	}
 
-	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(rawURLs, fuzzIdentifier)
-
+	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(urls, fuzzIdentifier)
 	for _, u := range fuzzableURLs {
 		fmt.Println(u)
 	}
@@ -57,6 +68,24 @@ func runMain(_ *cobra.Command, _ []string) {
 			log.Warnf("- %v", e)
 		}
 	}
+
+	// Run the main fuzzing logic
+	wrapper := sfz.New(
+		sfz.WithRawURLs(urls),
+		sfz.WithFuzzIdentifier(fuzzIdentifier),
+		sfz.WithWordlist(wordlist),
+		sfz.WithFinalJSONOutput(outputJSON),
+		sfz.WithFFUFResultsOutputFolder(outputFolder),
+		sfz.WithSilentMode(silent),
+		sfz.WithDisableColorizeOutput(!colorize),
+		sfz.WithHeaders(headers),
+		sfz.WithDisableAutomaticCalibration(disableAutoCalibration),
+		sfz.WithAdditionalFFUFArgs(additionalFFUFArgs.Value()),
+		sfz.WithDisableWarnings(disableWarnings),
+		sfz.WithDebugLog(debugLog),
+	)
+
+	return wrapper.Run()
 }
 
 func readURLsFromFile(path string) ([]string, error) {
@@ -75,11 +104,4 @@ func readURLsFromFile(path string) ([]string, error) {
 		}
 	}
 	return urls, scanner.Err()
-}
-
-func Execute() {
-	ConfigureFlags(rootCmd)
-	if err := rootCmd.Execute(); err != nil {
-		log.Error(err)
-	}
 }
