@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
+	log "github.com/ayushkr12/sfz/pkg/logger"
 	"github.com/ayushkr12/sfz/pkg/sfz"
 	"github.com/ayushkr12/sfz/pkg/urlparser"
-	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/term"
 )
@@ -29,7 +29,7 @@ func runMain() error {
 	var urls []string
 
 	if !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Info("Reading URLs from stdin...")
+		log.Info("Reading URLs from stdin")
 		reader := bufio.NewReader(os.Stdin)
 		for {
 			line, err := reader.ReadString('\n')
@@ -37,7 +37,7 @@ func runMain() error {
 				if err == io.EOF {
 					break
 				}
-				log.Errorf("Error reading stdin: %v", err)
+				log.Error(fmt.Sprintf("Error reading stdin: %v", err))
 				break
 			}
 			line = strings.TrimSpace(line)
@@ -46,11 +46,11 @@ func runMain() error {
 			}
 		}
 	} else if urlFile != "" {
-		log.Infof("Reading URLs from file: %s", urlFile)
+		log.Info(fmt.Sprintf("Reading URLs from file: %s", urlFile))
 		var err error
 		urls, err = readURLsFromFile(urlFile)
 		if err != nil {
-			log.Fatalf("Failed to read URLs from file: %v", err)
+			log.Error(fmt.Sprintf("Failed to read URLs from file: %v", err))
 		}
 	} else {
 		log.Info("No input provided. Use --list or pipe URLs into stdin.")
@@ -65,7 +65,7 @@ func runMain() error {
 	if len(errs) > 0 {
 		log.Warn("Errors encountered during fuzzing:")
 		for _, e := range errs {
-			log.Warnf("- %v", e)
+			log.Warn(e.Error())
 		}
 	}
 
