@@ -26,8 +26,11 @@ func App() *cli.App {
 }
 
 func runMain() error {
-	var urls []string
+	PrintBanner()
 
+	var urls []string
+	// Check if stdin is not a terminal (i.e., input is being piped)
+	// If stdin is not a terminal, read urls from stdin
 	if !term.IsTerminal(int(os.Stdin.Fd())) {
 		log.Info("Reading URLs from stdin")
 		reader := bufio.NewReader(os.Stdin)
