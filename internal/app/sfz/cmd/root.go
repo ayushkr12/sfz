@@ -22,6 +22,7 @@ func App() *cli.App {
 		Action: func(c *cli.Context) error {
 			return runMain()
 		},
+		CustomAppHelpTemplate: HelpMessage,
 	}
 }
 
@@ -54,6 +55,7 @@ func runMain() error {
 		urls, err = readURLsFromFile(urlFile)
 		if err != nil {
 			log.Error(fmt.Sprintf("Failed to read URLs from file: %v", err))
+			return nil
 		}
 	} else {
 		log.Info("No input provided. Use --list or pipe URLs into stdin.")

@@ -3,27 +3,18 @@ package cmd
 import "github.com/urfave/cli/v2"
 
 var (
-	// Defaults
-	defaultFuzzIdentifier         = "FUZZ"
-	defaultSilent                 = false
-	defaultColorize               = true
-	defaultDisableAutoCalibration = false
-	defaultDisableWarnings        = false
-	defaultDebugLog               = false
-
-	// Variables to hold flag values
-	fuzzIdentifier         string
+	fuzzIdentifier         = "FUZZ"
 	urlFile                string
 	wordlist               string
 	outputJSON             string
 	outputFolder           string
-	silent                 bool
-	colorize               bool
+	silent                 = false
+	colorize               = true
 	headers                string
-	disableAutoCalibration bool
+	disableAutoCalibration = false
 	additionalFFUFArgs     cli.StringSlice
-	disableWarnings        bool
-	debugLog               bool
+	disableWarnings        = false
+	debugLog               = false
 )
 
 func Flags() []cli.Flag {
@@ -37,8 +28,7 @@ func Flags() []cli.Flag {
 		&cli.StringFlag{
 			Name:        "fzi",
 			Aliases:     []string{"i"},
-			Usage:       "Fuzz identifier to replace in URLs",
-			Value:       defaultFuzzIdentifier,
+			Usage:       `Fuzz identifier to replace in URLs (default: "FUZZ")`,
 			Destination: &fuzzIdentifier,
 		},
 		&cli.StringFlag{
@@ -61,42 +51,44 @@ func Flags() []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:        "silent",
-			Usage:       "Enable silent mode",
-			Value:       defaultSilent,
+			Aliases:     []string{"s"},
+			Usage:       "Enable silent mode (default: false)",
 			Destination: &silent,
 		},
 		&cli.BoolFlag{
 			Name:        "colorize",
-			Usage:       "Enable or disable colorized output",
-			Value:       defaultColorize,
+			Aliases:     []string{"c"},
+			Usage:       "Enable or disable colorized output (default: true)",
 			Destination: &colorize,
 		},
 		&cli.StringFlag{
 			Name:        "headers",
+			Aliases:     []string{"H"},
 			Usage:       "Custom headers to send with requests",
 			Destination: &headers,
 		},
 		&cli.BoolFlag{
 			Name:        "disable-auto-calibration",
-			Usage:       "Disable automatic calibration",
-			Value:       defaultDisableAutoCalibration,
+			Aliases:     []string{"dac"},
+			Usage:       "Disable automatic calibration (default: false)",
 			Destination: &disableAutoCalibration,
 		},
 		&cli.StringSliceFlag{
 			Name:        "additional-ffuf-args",
+			Aliases:     []string{"afa"},
 			Usage:       "Additional FFUF arguments",
 			Destination: &additionalFFUFArgs,
 		},
 		&cli.BoolFlag{
 			Name:        "disable-warnings",
-			Usage:       "Disable warnings",
-			Value:       defaultDisableWarnings,
+			Aliases:     []string{"dw"},
+			Usage:       "Disable warnings (default: false)",
 			Destination: &disableWarnings,
 		},
 		&cli.BoolFlag{
 			Name:        "debug-log",
-			Usage:       "Enable debug logging",
-			Value:       defaultDebugLog,
+			Aliases:     []string{"d"},
+			Usage:       "Enable debug logging (default: false)",
 			Destination: &debugLog,
 		},
 	}
