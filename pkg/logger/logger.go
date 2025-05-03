@@ -8,9 +8,8 @@ import (
 )
 
 var log *logrus.Logger
-var EnableTimestamp = true // Default is true
-var DisableWarn = false    // If true, disables Warn logs
-var DisableDebug = true    // If true, disables Debug logs
+var DisableWarn = false // If true, disables Warn logs
+var DisableDebug = true // If true, disables Debug logs
 
 // CustomFormatter formats logs with short levels and optional timestamps
 type CustomFormatter struct {
@@ -18,6 +17,12 @@ type CustomFormatter struct {
 }
 
 func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	var EnableTimestamp bool
+
+	if !DisableDebug {
+		EnableTimestamp = true
+	}
+
 	if EnableTimestamp {
 		entry.Message = "[" + time.Now().Format("2006-01-02 15:04:05") + "] " + entry.Message
 	}

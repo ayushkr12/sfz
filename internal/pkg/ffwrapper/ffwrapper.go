@@ -24,7 +24,7 @@ type FFUFWrapper struct {
 
 func (fw *FFUFWrapper) LaunchCMDs() {
 	if !fw.DebugLog {
-		log.EnableTimestamp = false
+		log.DisableDebug = true
 	}
 
 	// Validate shared config once

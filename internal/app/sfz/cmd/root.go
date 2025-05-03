@@ -30,6 +30,11 @@ func runMain() error {
 	PrintBanner()
 
 	var urls []string
+
+	if debugLog {
+		log.DisableDebug = false
+	}
+
 	// Check if stdin is not a terminal (i.e., input is being piped)
 	// If stdin is not a terminal, read urls from stdin
 	if !term.IsTerminal(int(os.Stdin.Fd())) {

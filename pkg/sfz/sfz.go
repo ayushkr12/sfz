@@ -24,7 +24,6 @@ func New(opts ...Option) *Wrapper {
 // Run generates fuzzable URLs and launches ffuf with mapped options
 func (w *Wrapper) Run() error {
 	if !w.cfg.debugLog {
-		logger.EnableTimestamp = false
 		logger.DisableDebug = true
 	}
 
