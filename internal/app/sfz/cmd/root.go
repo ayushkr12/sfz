@@ -55,7 +55,7 @@ func runMain() error {
 			}
 		}
 	} else if urlFile != "" {
-		log.Info(fmt.Sprintf("Reading URLs from file: %s", urlFile))
+		// log.Info(fmt.Sprintf("Reading URLs from file: %s", urlFile))
 		var err error
 		urls, err = readURLsFromFile(urlFile)
 		if err != nil {
@@ -73,10 +73,13 @@ func runMain() error {
 	}
 
 	if len(errs) > 0 {
-		log.Warn("Errors encountered during fuzzing:")
-		for _, e := range errs {
-			log.Warn(e.Error())
-		}
+		log.Warn("Errors encountered during generating fuzzable urls: ")
+		log.Warn(MergeErrorsToString(errs))
+	}
+
+	// Check if fuzzing is disabled
+	if disableFuzz {
+		return nil
 	}
 
 	// Run the main fuzzing logic
@@ -96,22 +99,4 @@ func runMain() error {
 	)
 
 	return wrapper.Run()
-}
-
-func readURLsFromFile(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var urls []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line != "" {
-			urls = append(urls, line)
-		}
-	}
-	return urls, scanner.Err()
 }

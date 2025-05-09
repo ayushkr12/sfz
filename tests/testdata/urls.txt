@@ -1,0 +1,3 @@
+http://localhost/dashboard
+http://localhost/api/core/
+http://localhost/api/v1/core/user/me

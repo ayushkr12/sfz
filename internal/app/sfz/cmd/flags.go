@@ -5,6 +5,7 @@ import "github.com/urfave/cli/v2"
 var (
 	fuzzIdentifier         = "FUZZ"
 	urlFile                string
+	disableFuzz            = false
 	wordlist               string
 	outputJSON             string
 	outputFolder           string
@@ -29,7 +30,15 @@ func Flags() []cli.Flag {
 			Name:        "fzi",
 			Aliases:     []string{"i"},
 			Usage:       `Fuzz identifier to replace in URLs (default: "FUZZ")`,
+			Value:       fuzzIdentifier,
 			Destination: &fuzzIdentifier,
+		},
+		&cli.BoolFlag{
+			Name:        "disable-fuzz",
+			Aliases:     []string{"dfz"},
+			Usage:       `Disable fuzzing and generate Fuzzable URLs only (default: false)`,
+			Value:       disableFuzz,
+			Destination: &disableFuzz,
 		},
 		&cli.StringFlag{
 			Name:        "wordlist",
@@ -53,12 +62,14 @@ func Flags() []cli.Flag {
 			Name:        "silent",
 			Aliases:     []string{"s"},
 			Usage:       "Enable silent mode (default: false)",
+			Value:       silent,
 			Destination: &silent,
 		},
 		&cli.BoolFlag{
 			Name:        "colorize",
 			Aliases:     []string{"c"},
 			Usage:       "Enable or disable colorized output (default: true)",
+			Value:       colorize,
 			Destination: &colorize,
 		},
 		&cli.StringFlag{
@@ -71,6 +82,7 @@ func Flags() []cli.Flag {
 			Name:        "disable-auto-calibration",
 			Aliases:     []string{"dac"},
 			Usage:       "Disable automatic calibration (default: false)",
+			Value:       disableAutoCalibration,
 			Destination: &disableAutoCalibration,
 		},
 		&cli.StringSliceFlag{
@@ -83,12 +95,14 @@ func Flags() []cli.Flag {
 			Name:        "disable-warnings",
 			Aliases:     []string{"dw"},
 			Usage:       "Disable warnings (default: false)",
+			Value:       disableWarnings,
 			Destination: &disableWarnings,
 		},
 		&cli.BoolFlag{
 			Name:        "debug-log",
 			Aliases:     []string{"d"},
 			Usage:       "Enable debug logging (default: false)",
+			Value:       debugLog,
 			Destination: &debugLog,
 		},
 	}

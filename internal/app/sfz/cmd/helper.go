@@ -22,6 +22,7 @@ CUSTOMIZATION:
   -afa, -additional-ffuf-args   additional FFUF arguments
 
 BEHAVIOR:
+  -dfz, -disable-fuzz              disable fuzzing and generate Fuzzable URLs only
   -dac, -disable-auto-calibration  disable automatic calibration
   -dw, -disable-warnings           disable warnings
 
