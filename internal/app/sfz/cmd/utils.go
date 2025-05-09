@@ -33,3 +33,7 @@ func readURLsFromFile(filePath string) ([]string, error) {
 	return urls, scanner.Err()
 
 }
+
+func RemoveDir(dirPath string) error {
+	return os.RemoveAll(dirPath)
+}

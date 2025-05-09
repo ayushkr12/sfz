@@ -106,5 +106,14 @@ func runMain() error {
 		sfz.WithDebugLog(debugLog),
 	)
 
-	return wrapper.Run()
+	err := wrapper.Run()
+	if err != nil {
+		return err
+	}
+
+	if !keepOutputFolder {
+		RemoveDir(outputFolder)
+	}
+
+	return nil
 }

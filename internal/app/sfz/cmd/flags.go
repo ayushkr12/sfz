@@ -10,6 +10,7 @@ var (
 	wordlist               string
 	outputJSON             string
 	outputFolder           string
+	keepOutputFolder       = false
 	silent                 = false
 	colorize               = true
 	headers                string
@@ -64,6 +65,12 @@ func Flags() []cli.Flag {
 			Aliases:     []string{"of"},
 			Usage:       "Path to output folder for FFUF results",
 			Destination: &outputFolder,
+		},
+		&cli.BoolFlag{
+			Name:        "keep-output-folder",
+			Aliases:     []string{"-kof"},
+			Usage:       "Disable deleting output folder after run (default: false)",
+			Destination: &keepOutputFolder,
 		},
 		&cli.BoolFlag{
 			Name:        "silent",
