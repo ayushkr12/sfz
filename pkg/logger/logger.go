@@ -62,6 +62,7 @@ func Warn(msg string) {
 
 func Error(msg string) {
 	log.Error(msg)
+	os.Exit(1)
 }
 
 func Debug(msg string) {
