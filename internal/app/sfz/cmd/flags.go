@@ -5,6 +5,7 @@ import "github.com/urfave/cli/v2"
 var (
 	fuzzIdentifier         = "FUZZ"
 	urlFile                string
+	url                    string
 	disableFuzz            = false
 	wordlist               string
 	outputJSON             string
@@ -20,6 +21,12 @@ var (
 
 func Flags() []cli.Flag {
 	return []cli.Flag{
+		&cli.StringFlag{
+			Name:        "url",
+			Aliases:     []string{"u"},
+			Usage:       "Single URL to fuzz",
+			Destination: &url,
+		},
 		&cli.StringFlag{
 			Name:        "list",
 			Aliases:     []string{"l"},

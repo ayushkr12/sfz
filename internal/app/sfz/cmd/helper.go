@@ -9,6 +9,7 @@ USAGE:
 FLAGS:
 
 INPUT:
+  -u, -url                      URL to fuzz
   -l, -list                     file containing URLs to fuzz
   -i, -fzi                      fuzz identifier to replace in URLs (default: "FUZZ")
   -w, -wordlist                 path to wordlist

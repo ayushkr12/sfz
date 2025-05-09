@@ -35,9 +35,12 @@ func runMain() error {
 		log.DisableDebug = false
 	}
 
-	// Check if stdin is not a terminal (i.e., input is being piped)
-	// If stdin is not a terminal, read urls from stdin
-	if !term.IsTerminal(int(os.Stdin.Fd())) {
+	// Check if a single URL is provided
+	if url != "" {
+		urls = append(urls, strings.TrimSpace(url))
+		// Check if stdin is not a terminal (i.e., input is being piped)
+		// If stdin is not a terminal, read urls from stdin
+	} else if !term.IsTerminal(int(os.Stdin.Fd())) {
 		log.Info("Reading URLs from stdin")
 		reader := bufio.NewReader(os.Stdin)
 		for {
