@@ -70,18 +70,23 @@ func runMain() error {
 		return nil
 	}
 
-	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(urls, fuzzIdentifier)
-	for _, u := range fuzzableURLs {
-		fmt.Println(u)
-	}
-
-	if len(errs) > 0 {
-		log.Warn("Errors encountered during generating fuzzable urls: ")
-		log.Warn(MergeErrorsToString(errs))
-	}
-
-	// Check if fuzzing is disabled
 	if disableFuzz {
+		fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(urls, fuzzIdentifier)
+		if len(fuzzableURLs) == 0 {
+			log.Warn("No fuzzable URLs generated. Please Check your input.")
+			return nil
+		} else {
+			log.Info(fmt.Sprintf("Generated %d fuzzable URLs\n", len(fuzzableURLs)))
+		}
+		for _, u := range fuzzableURLs {
+			fmt.Println(u)
+		}
+
+		if len(errs) > 0 {
+			log.Warn("Errors encountered during generating fuzzable urls: ")
+			log.Warn(MergeErrorsToString(errs))
+		}
+
 		return nil
 	}
 
