@@ -34,7 +34,8 @@ func (f *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 
 func init() {
 	log = logrus.New()
-	log.SetOutput(os.Stdout)
+	// Send all logs to stderr to avoid polluting stdout (e.g., when piping stdout to clip.exe)
+	log.SetOutput(os.Stderr)
 	log.SetLevel(logrus.DebugLevel)
 
 	log.SetFormatter(&CustomFormatter{
