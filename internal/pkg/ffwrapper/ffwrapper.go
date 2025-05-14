@@ -64,12 +64,6 @@ func (fw *FFUFWrapper) LaunchCMD(
 ) {
 	var args []string
 
-	err = CreateFolderIfNotExists(outputFolderPath)
-
-	if err != nil {
-		return "", fmt.Errorf("failed to create output folder: %v", err)
-	}
-
 	// Add additional args first to allow overriding
 	args = append(args, fw.AdditionalFFUFArgs...)
 
@@ -89,6 +83,10 @@ func (fw *FFUFWrapper) LaunchCMD(
 	}
 
 	if fw.FFUFResultsOutputFolder != "" { // set output file only if output folder is set
+		err = CreateFolderIfNotExists(outputFolderPath)
+		if err != nil {
+			return "", fmt.Errorf("failed to create output folder: %v", err)
+		}
 		JSONOuputFilePath = filepath.Join(outputFolderPath, GenerateRandomString(20)+".json")
 		args = append(args, "-o", JSONOuputFilePath)
 	}
