@@ -10,3 +10,7 @@ run:
 .PHONY: build
 build:
 	go build -o $(APP_NAME) $(CMD_DIR)
+
+.PHONY: bin
+bin:
+	mv $(APP_NAME) ~/go/bin/$(APP_NAME)
