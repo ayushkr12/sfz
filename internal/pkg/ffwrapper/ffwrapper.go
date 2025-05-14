@@ -91,7 +91,9 @@ func (fw *FFUFWrapper) LaunchCMD(
 		args = append(args, "-o", JSONOuputFilePath)
 	}
 
+	fmt.Println() // for better readability
 	log.Info(fmt.Sprintf("Launching FFUF for URL %s", targetURL))
+	fmt.Println() // for better readability
 	log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
 
 	cmd := exec.Command("ffuf", args...)

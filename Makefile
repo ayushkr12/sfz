@@ -14,3 +14,8 @@ build:
 .PHONY: bin
 bin:
 	mv $(APP_NAME) ~/go/bin/$(APP_NAME)
+
+.PHONY: install-bin
+install-bin:
+	$(MAKE) build
+	$(MAKE) bin

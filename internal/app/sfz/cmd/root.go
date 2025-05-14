@@ -76,7 +76,7 @@ func runMain() error {
 			log.Warn("No fuzzable URLs generated. Please Check your input.")
 			return nil
 		} else {
-			log.Info(fmt.Sprintf("Generated %d fuzzable URLs\n", len(fuzzableURLs)))
+			log.Info(fmt.Sprintf("Generated %d fuzzable URLs", len(fuzzableURLs)))
 		}
 		for _, u := range fuzzableURLs {
 			fmt.Println(u)
