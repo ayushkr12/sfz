@@ -3,6 +3,10 @@ default: build
 APP_NAME := "sfz"
 CMD_DIR := "cmd/$(APP_NAME)/main.go"
 
+.PHONY: install
+install:
+	go install github.com/ayushkr12/sfz/cmd/sfz@latest
+
 .PHONY: run
 run:
 	go run $(CMD_DIR) $(ARGS)
