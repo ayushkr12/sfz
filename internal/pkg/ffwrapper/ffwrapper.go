@@ -102,9 +102,11 @@ func (fw *FFUFWrapper) LaunchCMD(
 		return "", fmt.Errorf("error running ffuf: %w", err)
 	}
 
-	log.Info(
-		fmt.Sprintf("Saved to %s\n", JSONOuputFilePath),
-	)
+	if outputFolderPath != "" {
+		log.Info(
+			fmt.Sprintf("Saved to %s\n", JSONOuputFilePath),
+		)
+	}
 
 	return JSONOuputFilePath, nil
 }
