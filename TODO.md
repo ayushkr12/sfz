@@ -8,6 +8,8 @@
   - Query parameters and values  
   To be used with `ffuf`.
 
+- [ ] Implement AI based sensitive or interesting response detection
+
 ## Misc
 
 - [ ] Parse `ffuf` JSON output after each run and display it cleanly in the terminal.
