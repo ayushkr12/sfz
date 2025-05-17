@@ -3,7 +3,8 @@ package sfz
 type config struct {
 	rawURLs                []string
 	fuzzIdentifier         string
-	wordlist               string
+	wordlistPath           string
+	enableAutoWordlist     bool
 	outputJSON             string
 	outputFolder           string
 	silent                 bool
@@ -43,7 +44,13 @@ func WithFFUFResultsOutputFolder(path string) Option {
 
 func WithWordlist(path string) Option {
 	return func(c *config) {
-		c.wordlist = path
+		c.wordlistPath = path
+	}
+}
+
+func WithEnableAutoWordlist(enable bool) Option {
+	return func(c *config) {
+		c.enableAutoWordlist = enable
 	}
 }
 

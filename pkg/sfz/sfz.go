@@ -6,6 +6,8 @@ import (
 	"github.com/ayushkr12/sfz/pkg/ffwrapper"
 	"github.com/ayushkr12/sfz/pkg/logger"
 	"github.com/ayushkr12/sfz/pkg/urlparser"
+	"github.com/ayushkr12/sfz/pkg/utils"
+	xurl "github.com/ayushkr12/xurl/pkg"
 )
 
 type Wrapper struct {
@@ -27,12 +29,37 @@ func (w *Wrapper) Run() error {
 		logger.DisableDebug = true
 	}
 
-	if w.cfg.wordlist == "" {
-		logger.Error("Wordlist is required")
-	}
-
 	if w.cfg.disableWarnings {
 		logger.DisableWarn = true
+	}
+
+	var wordlist []string
+	var err error
+
+	if w.cfg.wordlistPath == "" {
+		logger.Warn("No wordlist provided. Wordlist will be generated automatically.")
+		w.cfg.enableAutoWordlist = true // Force auto wordlist generation if no wordlist is provided
+	} else {
+		wordlist, err = utils.FileToSlice(w.cfg.wordlistPath)
+		if err != nil {
+			return fmt.Errorf("failed to read wordlist file: %v", err)
+		}
+	}
+
+	if w.cfg.enableAutoWordlist {
+		logger.Info("Generating custom wordlist from input URLs")
+		var errs []error
+		wordlist, errs = xurl.ExtractWords(w.cfg.rawURLs)
+		if len(wordlist) == 0 {
+			return fmt.Errorf("no words found in the provided URLs")
+		}
+		logger.Info(fmt.Sprintf("Generated %d words from input URLs\n", len(wordlist)))
+		logger.Debug(fmt.Sprintf("Generated words: %v", wordlist))
+		if len(errs) > 0 {
+			for _, err := range errs {
+				logger.Warn(err.Error())
+			}
+		}
 	}
 
 	fuzzableURLs, errs := urlparser.GenerateFuzzableURLs(w.cfg.rawURLs, w.cfg.fuzzIdentifier)
@@ -53,7 +80,7 @@ func (w *Wrapper) Run() error {
 
 	ffOpts := []ffwrapper.Option{
 		ffwrapper.WithFuzzableURLs(fuzzableURLs),
-		ffwrapper.WithWordlist(w.cfg.wordlist),
+		ffwrapper.WithWordlist(wordlist),
 		ffwrapper.WithFinalJSONOutput(w.cfg.outputJSON),
 		ffwrapper.WithSilentMode(w.cfg.silent),
 		ffwrapper.WithFFUFResultsOutputFolder(w.cfg.outputFolder),

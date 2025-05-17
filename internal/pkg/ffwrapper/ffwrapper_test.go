@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var fw = &FFUFWrapper{FuzzableURLs: []string{"http://example.com/FUZZ"}, WordlistPath: "-", FFUFResultsOutputFolder: "."}
+var fw = &FFUFWrapper{FuzzableURLs: []string{"http://example.com/FUZZ"}, Wordlist: []string{"test", "123"}, FFUFResultsOutputFolder: ".", Silent: false}
 
 func TestLaunchCMDs(t *testing.T) {
 	fw.LaunchCMDs()

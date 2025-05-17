@@ -11,7 +11,7 @@ func TestRunFFUF(t *testing.T) {
 		ffwrapper.WithFuzzableURLs([]string{
 			"https://example.com/FUZZ",
 		}),
-		ffwrapper.WithWordlist("common.txt"),
+		ffwrapper.WithWordlist([]string{"test", "123"}),
 		ffwrapper.WithFinalJSONOutput("test_output.json"),
 		ffwrapper.WithSilentMode(true),
 		ffwrapper.WithFFUFResultsOutputFolder("test_output"),

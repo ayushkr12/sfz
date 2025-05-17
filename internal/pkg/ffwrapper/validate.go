@@ -5,8 +5,8 @@ import (
 )
 
 func (fw *FFUFWrapper) ValidateConfig() error {
-	if fw.WordlistPath == "" {
-		return fmt.Errorf("wordlist path is required")
+	if len(fw.Wordlist) == 0 {
+		return fmt.Errorf("empty wordlist provided")
 	}
 
 	if fw.FFUFResultsOutputFolder == "" && fw.FinalJSONOutputFilePath != "" {

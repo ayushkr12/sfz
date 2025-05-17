@@ -22,9 +22,9 @@ func WithFFUFResultsOutputFolder(path string) Option {
 	}
 }
 
-func WithWordlist(path string) Option {
+func WithWordlist(words []string) Option {
 	return func(f *ffwrapper.FFUFWrapper) {
-		f.WordlistPath = path
+		f.Wordlist = words
 	}
 }
 

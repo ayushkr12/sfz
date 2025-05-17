@@ -11,7 +11,7 @@ func TestRun(t *testing.T) {
 	// Set up test data
 	rawURLs := []string{"http://localhost:5000/api/v1/user/profile"}
 	fuzzIdentifier := "FUZZ"
-	wordlist := "testdata/wordlist.txt"
+	wordlist := ""
 	outputJSON := "testdata/final_output.json"
 	outputFolder := "testdata/output"
 	silent := true
@@ -20,7 +20,7 @@ func TestRun(t *testing.T) {
 	disableAutoCalibration := false
 	additionalFFUFArgs := []string{"-fc", "403"}
 	disableWarnings := false
-	debugLog := false
+	debugLog := true
 
 	// Create the wrapper with the necessary options
 	wrapper := sfz.New(

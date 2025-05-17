@@ -2,6 +2,7 @@ package ffwrapper
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,7 +14,7 @@ type FFUFWrapper struct {
 	FuzzableURLs                []string // list of target URLs to scan
 	FinalJSONOutputFilePath     string   // path to the merged JSON output file to create after all FFUF runs
 	FFUFResultsOutputFolder     string   // path to the folder where FFUF results will be stored
-	WordlistPath                string   // path to the wordlist file
+	Wordlist                    []string // list of words to use for fuzzing
 	Headers                     string   // HTTP headers to be used in the requests
 	DisableAutomaticCalibration bool     // flag to disable automatic calibration "-ac"
 	DisableColorizeOutput       bool     // flag to disable colorized output "-c"
@@ -67,7 +68,7 @@ func (fw *FFUFWrapper) LaunchCMD(
 	// Add additional args first to allow overriding
 	args = append(args, fw.AdditionalFFUFArgs...)
 
-	args = append(args, "-u", targetURL, "-w", fw.WordlistPath)
+	args = append(args, "-u", targetURL, "-w", "-") // "-" means to read from stdin
 
 	if !fw.DisableColorizeOutput {
 		args = append(args, "-c")
@@ -93,12 +94,25 @@ func (fw *FFUFWrapper) LaunchCMD(
 
 	fmt.Println() // for better readability
 	log.Info(fmt.Sprintf("Launching FFUF for URL %s", targetURL))
-	fmt.Println() // for better readability
+	// fmt.Println() // for better readability
 	log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
 
+	pr, pw := io.Pipe()
+
 	cmd := exec.Command("ffuf", args...)
-	cmd.Stdout = os.Stdout
+	cmd.Stdin = pr
 	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+
+	go func() { // write the wordlist to the pipe
+		defer pw.Close()
+		for _, word := range fw.Wordlist {
+			if word == "" {
+				continue
+			}
+			pw.Write([]byte(word + "\n"))
+		}
+	}()
 
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("error running ffuf: %w", err)
