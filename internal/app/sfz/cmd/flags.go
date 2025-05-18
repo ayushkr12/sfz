@@ -16,7 +16,7 @@ var (
 	colorize               = true
 	headers                string
 	disableAutoCalibration = false
-	additionalFFUFArgs     cli.StringSlice
+	additionalFFUFArgs     string
 	disableWarnings        = false
 	debugLog               = false
 )
@@ -106,7 +106,7 @@ func Flags() []cli.Flag {
 			Value:       disableAutoCalibration,
 			Destination: &disableAutoCalibration,
 		},
-		&cli.StringSliceFlag{
+		&cli.StringFlag{
 			Name:        "additional-ffuf-args",
 			Aliases:     []string{"afa"},
 			Usage:       "Additional FFUF arguments",

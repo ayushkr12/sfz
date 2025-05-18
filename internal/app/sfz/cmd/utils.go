@@ -2,9 +2,52 @@ package cmd
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
+
+// parses a shell-style string like `-mc 200 -mr 'something'` into a []string
+func ParseAdditionalFUFFArgs(input string) ([]string, error) {
+	var args []string
+	var current strings.Builder
+	inQuote := false
+	var quoteChar rune
+
+	for _, r := range input {
+		switch {
+		case unicode.IsSpace(r) && !inQuote:
+			if current.Len() > 0 {
+				args = append(args, current.String())
+				current.Reset()
+			}
+		case r == '\'' || r == '"':
+			if inQuote {
+				if r == quoteChar {
+					inQuote = false
+				} else {
+					current.WriteRune(r)
+				}
+			} else {
+				inQuote = true
+				quoteChar = r
+			}
+		default:
+			current.WriteRune(r)
+		}
+	}
+
+	if current.Len() > 0 {
+		args = append(args, current.String())
+	}
+
+	if inQuote {
+		return nil, fmt.Errorf("unclosed quote in input: %s", input)
+	}
+
+	return args, nil
+}
 
 func MergeErrorsToString(errors []error) string {
 	var sb strings.Builder

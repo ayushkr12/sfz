@@ -94,6 +94,18 @@ func runMain() error {
 		return nil
 	}
 
+	ffufArgs := func() []string {
+		if additionalFFUFArgs != "" {
+			parsed, err := ParseAdditionalFUFFArgs(additionalFFUFArgs)
+			if err != nil {
+				log.Error(fmt.Sprintf("error parsing additional ffuf args: %v", err))
+				return nil
+			}
+			return parsed
+		}
+		return nil
+	}()
+
 	// Run the main fuzzing logic
 	wrapper := sfz.New(
 		sfz.WithRawURLs(urls),
@@ -106,7 +118,7 @@ func runMain() error {
 		sfz.WithDisableColorizeOutput(!colorize),
 		sfz.WithHeaders(headers),
 		sfz.WithDisableAutomaticCalibration(disableAutoCalibration),
-		sfz.WithAdditionalFFUFArgs(additionalFFUFArgs.Value()),
+		sfz.WithAdditionalFFUFArgs(ffufArgs),
 		sfz.WithDisableWarnings(disableWarnings),
 		sfz.WithDebugLog(debugLog),
 	)
