@@ -2,7 +2,7 @@
 
 ## Features
 
-- [ ] Generate a quick wordlist from:
+- [x] Generate a quick wordlist from:
   - URL paths
   - Fragments
   - Query parameters and values  
