@@ -123,8 +123,8 @@ func main() {
 
 		// Fuzzing config
 		sfz.WithFuzzIdentifier("FUZZ"),
-		sfz.WithWordlist("payloads.txt"),               // leave empty if you want auto wordlist
-		sfz.WithEnableAutoWordlist(false),              // gets auto-enabled if no wordlist is given
+		sfz.WithWordlist("payloads.txt"),          // leave empty if you want auto wordlist
+		sfz.WithEnableAutoWordlist(false),         // gets auto-enabled if no wordlist is given
 
 		// Output
 		sfz.WithFinalJSONOutput("results/final.json"),
@@ -132,9 +132,9 @@ func main() {
 
 		// ffuf tweaks
 		sfz.WithHeaders("User-Agent: Mozilla/5.0"),
-		sfz.WithDisableAutomaticCalibration(false),     // -ac flag in ffuf
-		sfz.WithDisableColorizeOutput(false),           // -c flag in ffuf
-        sfz.WithSilentMode(true),                       // -s flag in ffuf
+		sfz.WithDisableAutomaticCalibration(false), // -ac flag in ffuf
+		sfz.WithDisableColorizeOutput(false),       // -c flag in ffuf
+		sfz.WithSilentMode(true),                   // -s flag in ffuf
 		sfz.WithAdditionalFFUFArgs([]string{"-fc", "403"}),
 
 		// logging
