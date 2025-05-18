@@ -79,7 +79,6 @@ cat urls.txt | sfz
 ```
 
 sfz will grab paths and query params from URLs using [xurl](https://github.com/ayushkr12/xurl) and create a quick dirty wordlist on its own.
-For using it as a Go package. Check the example below.
 
 ### Flags
 
