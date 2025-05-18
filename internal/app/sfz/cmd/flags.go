@@ -59,7 +59,6 @@ func Flags() []cli.Flag {
 			Name:        "auto-wordlist",
 			Aliases:     []string{"aw"},
 			Usage:       "Enable automatic wordlist generation from input URLs (default: false)",
-			Value:       false,
 			Destination: &enableAutoWordlist,
 		},
 		&cli.StringFlag{
