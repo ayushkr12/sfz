@@ -18,6 +18,7 @@ http://localhost/api/core
 
 It turns into stuff like:
 
+* `http://localhost/FUZZ`
 * `http://localhost/api/FUZZ`
 * `http://localhost/FUZZ/api`
 * `http://localhost/api/core/FUZZ`
