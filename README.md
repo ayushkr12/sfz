@@ -26,19 +26,60 @@ It turns into stuff like:
 
 ### Usage
 
-Run it like:
+To generate fuzzable URLs only. use the `-dfz` flag:
+
+```console
+> cat url.txt
+http://localhost/api/1/core/user
+http://localhost/api/2/core/users
+http://localhost/api/admin/pannel
+
+> cat url.txt | sfz -dfz
+
+            ____
+   _____   / __/  ____
+  / ___/  / /_   /_  /
+ (__  )  / __/    / /_
+/____/  /_/      /___/
+
+  v1, with <3 by @ayushkr12
+
+INFO Reading URLs from stdin
+INFO Generated 18 fuzzable URLs
+http://localhost/FUZZ
+http://localhost/api/1/core/user/FUZZ
+http://localhost/FUZZ/1/core/user
+http://localhost/api/FUZZ/core/user
+http://localhost/api/1/FUZZ/user
+http://localhost/api/1/core/FUZZ
+http://localhost/api/1/FUZZ
+http://localhost/api/FUZZ
+http://localhost/api/2/FUZZ/users
+http://localhost/FUZZ/2/core/users
+http://localhost/api/FUZZ/core/users
+http://localhost/api/2/core/FUZZ
+http://localhost/api/2/FUZZ
+http://localhost/api/2/core/users/FUZZ
+http://localhost/api/admin/FUZZ
+http://localhost/api/admin/pannel/FUZZ
+http://localhost/FUZZ/admin/pannel
+http://localhost/api/FUZZ/pannel
+```
+
+To actually fuzz stuff using ffuf, either feed it a file or pipe URLs in:
 
 ```bash
 sfz -l urls.txt -w wordlist.txt
 ```
 
-or just:
+or
 
 ```bash
 cat urls.txt | sfz
 ```
 
-if you're lazy and want auto wordlist gen (grabs paths and query params from the input URLs using [xurl](https://github.com/ayushkr12/xurl) and cooks up a quick dirty wordlist by itself.).
+sfz will grab paths and query params from URLs using [xurl](https://github.com/ayushkr12/xurl) and create a quick dirty wordlist on its own.
+For using it as a Go package. Check the example below.
 
 ### Flags
 
