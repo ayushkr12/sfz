@@ -27,6 +27,8 @@ func New(opts ...Option) *Wrapper {
 func (w *Wrapper) Run() error {
 	if !w.cfg.debugLog {
 		logger.DisableDebug = true
+	} else {
+		logger.DisableDebug = false
 	}
 
 	if w.cfg.disableWarnings {
