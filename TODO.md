@@ -21,4 +21,4 @@
 
 ## Chores
 
-- [ ] Write complete documentation.
+- [x] Write ~~complete~~ dirty documentation.
