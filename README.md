@@ -81,6 +81,14 @@ cat urls.txt | sfz
 
 sfz will grab paths and query params from URLs using [xurl](https://github.com/ayushkr12/xurl) and create a quick dirty wordlist on its own.
 
+To pass custom options to `ffuf`, Use the `-afa` flag (Additional FFUF Args):
+
+```bash
+sfz -l urls.txt -w wordlist.txt -dac -afa "-mc 200 -mr 'sensitive'"
+```
+
+This passes `-mc 200 -mr 'sensitive'` to ffuf, so you can match status codes, regex, use filters, headers, delay, etc. anything ffuf supports.
+
 ### Flags
 
 here’s the whole help menu.
