@@ -12,7 +12,7 @@ Don’t wanna give a wordlist? Cool, it’ll rip some paths & query params from 
 
 Example:
 
-```console
+```txt
 http://localhost/api/core
 ```
 
@@ -28,13 +28,13 @@ It turns into stuff like:
 
 Run it like:
 
-```console
+```bash
 sfz -l urls.txt -w wordlist.txt
 ```
 
 or just:
 
-```console
+```bash
 cat urls.txt | sfz
 ```
 
