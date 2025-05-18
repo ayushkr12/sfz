@@ -95,7 +95,7 @@ func (fw *FFUFWrapper) LaunchCMD(
 	fmt.Println() // for better readability
 	log.Info(fmt.Sprintf("Launching FFUF for URL %s", targetURL))
 	// fmt.Println() // for better readability
-	log.Debug(fmt.Sprintf("Executing FFUF command: %s\n", getRawCommandOutput(fw.AdditionalFFUFArgs)))
+	log.Debug(fmt.Sprintf("Executing command: %s", getRawCommandOutput(args)))
 
 	pr, pw := io.Pipe()
 
