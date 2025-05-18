@@ -13,6 +13,7 @@ INPUT:
   -l,  --list                     File containing multiple URLs to fuzz
   -i,  --fzi                      Placeholder string in URLs to replace with wordlist entries (default: "FUZZ")
   -w,  --wordlist                 Path to the wordlist file used for fuzzing
+  -aw, --auto-wordlist            Automatically generate a wordlist from the provided URLs (enabled as default if no wordlist is provided)
 
 OUTPUT:
   -o,   --output-json             File path to store the final merged JSON output from all ffuf results

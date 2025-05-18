@@ -8,6 +8,7 @@ var (
 	url                    string
 	disableFuzz            = false
 	wordlist               string
+	enableAutoWordlist     = false
 	outputJSON             string
 	outputFolder           string
 	keepOutputFolder       = false
@@ -53,6 +54,13 @@ func Flags() []cli.Flag {
 			Aliases:     []string{"w"},
 			Usage:       "Path to wordlist",
 			Destination: &wordlist,
+		},
+		&cli.BoolFlag{
+			Name:        "auto-wordlist",
+			Aliases:     []string{"aw"},
+			Usage:       "Enable automatic wordlist generation from input URLs (default: false)",
+			Value:       false,
+			Destination: &enableAutoWordlist,
 		},
 		&cli.StringFlag{
 			Name:        "output-json",

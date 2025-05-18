@@ -35,6 +35,10 @@ func runMain() error {
 		log.DisableDebug = false
 	}
 
+	if wordlist == "" {
+		enableAutoWordlist = true // enable auto wordlist generation if no wordlist is provided
+	}
+
 	// Check if a single URL is provided
 	if url != "" {
 		urls = append(urls, strings.TrimSpace(url))
@@ -95,6 +99,7 @@ func runMain() error {
 		sfz.WithRawURLs(urls),
 		sfz.WithFuzzIdentifier(fuzzIdentifier),
 		sfz.WithWordlist(wordlist),
+		sfz.WithEnableAutoWordlist(enableAutoWordlist),
 		sfz.WithFinalJSONOutput(outputJSON),
 		sfz.WithFFUFResultsOutputFolder(outputFolder),
 		sfz.WithSilentMode(silent),

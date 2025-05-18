@@ -25,6 +25,9 @@ func New(opts ...Option) *Wrapper {
 
 // Run generates fuzzable URLs and launches ffuf with mapped options
 func (w *Wrapper) Run() error {
+	if err := w.Validate(); err != nil {
+		logger.Error(err.Error())
+	}
 	if !w.cfg.debugLog {
 		logger.DisableDebug = true
 	} else {
@@ -55,7 +58,7 @@ func (w *Wrapper) Run() error {
 		if len(wordlist) == 0 {
 			return fmt.Errorf("no words found in the provided URLs")
 		}
-		logger.Info(fmt.Sprintf("Generated %d words from input URLs\n", len(wordlist)))
+		logger.Info(fmt.Sprintf("Generated %d words from input URLs", len(wordlist)))
 		logger.Debug(fmt.Sprintf("Generated words: %v", wordlist))
 		if len(errs) > 0 {
 			for _, err := range errs {
