@@ -152,5 +152,5 @@ func main() {
 
 Sure, PRs welcome.
 
-## credits:
+## Credits
 this whole thing runs on top of [ffuf](https://github.com/ffuf/ffuf). so yeah, all fuzz magic comes from there. I just wrapped it up 'cause I was lazy. respect to @joohoi.
