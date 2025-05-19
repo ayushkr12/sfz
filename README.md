@@ -2,29 +2,6 @@
 
 Smart fuzzin' cuz ffuf was boring
 
-### What's this?
-
-So I got tired of writing the same dumb ffuf URLs again and again like a caveman.
-Wrote this tool for *me*, but hey, maybe you'll like it too.
-
-You give it a bunch of URLs, it figures out where to slap that juicy `FUZZ`, then runs ffuf for you.
-Don’t wanna give a wordlist? Cool, it’ll rip some paths & query params from the URLs and make a quick & dirty one on the fly.
-
-Example:
-
-```txt
-http://localhost/api/core
-```
-
-It turns into stuff like:
-
-* `http://localhost/FUZZ`
-* `http://localhost/api/FUZZ`
-* `http://localhost/FUZZ/api`
-* `http://localhost/api/core/FUZZ`
-
-...then ffuf goes brrr.
-
 ### Usage
 
 To generate fuzzable URLs only. use the `-dfz` flag:
