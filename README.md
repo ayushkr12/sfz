@@ -44,7 +44,7 @@ http://localhost/FUZZ/admin/pannel
 http://localhost/api/FUZZ/pannel
 ```
 
-To fuzz the above urls, either feed it a file or pipe URLs in:
+To fuzz the above urls using [ffuf](https://github.com/ffuf/ffuf), either feed it a file or pipe URLs in:
 
 ```bash
 sfz -l urls.txt -w wordlist.txt
